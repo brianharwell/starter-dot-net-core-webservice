@@ -22,6 +22,15 @@ namespace Starter.Webservice
                 .Where(x => x.IsSubclassOf(typeof(FluentValidation.IValidator)))
                 .InstancePerLifetimeScope()
                 .AsImplementedInterfaces();
+
+            builder.Register(context =>
+                    {
+                        var mapperConfiguration = new AutoMapper.MapperConfiguration(config => config.AddProfiles(assemblies));
+
+                        return mapperConfiguration.CreateMapper();
+                    })
+                .As<AutoMapper.IMapper>()
+                .SingleInstance();
         }
     }
 }

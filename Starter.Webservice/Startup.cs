@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,8 @@ namespace Starter.Webservice
                     {
                         options.Filters.Add(typeof(Core.Filters.ModelValidationFilter), 15);
                     });
+
+            services.AddAutoMapper();
 
             services.AddSwaggerGen(options =>
                 {
