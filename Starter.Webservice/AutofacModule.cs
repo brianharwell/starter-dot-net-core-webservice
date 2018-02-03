@@ -17,6 +17,11 @@ namespace Starter.Webservice
             builder.RegisterAssemblyTypes(assemblies)
                 .InstancePerLifetimeScope()
                 .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(x => x.IsSubclassOf(typeof(FluentValidation.IValidator)))
+                .InstancePerLifetimeScope()
+                .AsImplementedInterfaces();
         }
     }
 }
