@@ -34,24 +34,38 @@ namespace Starter.Webservice
 
             services.AddSwaggerGen(options =>
                 {
-                    options.SwaggerDoc("v1", new Info() { Title = "Starter", Version = "v1" });
+                    options.SwaggerDoc("v1", new Info() { Title = "Starter", Version = "v1" }); // TODO Replace this with the name of the application
                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseDeveloperExceptionPage();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                });
+
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200"));
+
+            app.UseMvc();
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-                app.UseSwagger();
-
-                app.UseSwaggerUI(options =>
-                    {
-                        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                    });
-            }
+            app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200")); // TODO Replace this with the public facing urls
 
             app.UseMvc();
         }
