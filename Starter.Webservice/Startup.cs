@@ -2,8 +2,10 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -31,6 +33,9 @@ namespace Starter.Webservice
                 .AddMvcOptions(options =>
                     {
                         options.Filters.Add(typeof(Core.Filters.ModelValidationFilter), 15);
+
+                        var authorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                        options.Filters.Add(new AuthorizeFilter(authorizePolicy));
                     });
 
             services.AddAutoMapper();
