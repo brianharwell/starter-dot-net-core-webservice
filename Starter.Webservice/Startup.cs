@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Starter.Webservice.Core.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Starter.Webservice
@@ -40,6 +42,8 @@ namespace Starter.Webservice
 
             services.AddAutoMapper();
 
+            services.AddCustomCors();
+
             services.AddSwaggerGen(options =>
                 {
                     options.SwaggerDoc("v1", new Info() { Title = "Starter", Version = "v1" }); // TODO Replace this with the name of the application
@@ -63,11 +67,7 @@ namespace Starter.Webservice
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 });
 
-            app.UseCors(builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials()
-                .WithOrigins("http://localhost:4200"));
+            app.UseCors("Development");
 
             app.UseAuthentication();
 
@@ -76,11 +76,9 @@ namespace Starter.Webservice
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(builder => builder
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials()
-                .WithOrigins("http://localhost:4200")); // TODO Replace this with the public facing urls
+            app.UseCors(env.EnvironmentName);
+
+            app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
 
             app.UseAuthentication();
 
