@@ -13,6 +13,7 @@ namespace Starter.Webservice
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .ConfigureServices(services => services.AddAutofac())
                 .UseStartup<Startup>()
                 .Build();
