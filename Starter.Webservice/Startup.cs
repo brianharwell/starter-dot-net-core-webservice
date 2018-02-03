@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,8 +23,7 @@ namespace Starter.Webservice
         {
             builder.RegisterModule(new AutofacModule());
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
@@ -39,9 +39,14 @@ namespace Starter.Webservice
                 {
                     options.SwaggerDoc("v1", new Info() { Title = "Starter", Version = "v1" }); // TODO Replace this with the name of the application
                 });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    {
+                        // TODO Set jwt options
+                    });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
@@ -59,6 +64,8 @@ namespace Starter.Webservice
                 .AllowCredentials()
                 .WithOrigins("http://localhost:4200"));
 
+            app.UseAuthentication();
+
             app.UseMvc();
         }
 
@@ -69,6 +76,8 @@ namespace Starter.Webservice
                 .AllowAnyMethod()
                 .AllowCredentials()
                 .WithOrigins("http://localhost:4200")); // TODO Replace this with the public facing urls
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }
