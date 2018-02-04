@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Starter.Webservice.Controllers
@@ -7,6 +8,7 @@ namespace Starter.Webservice.Controllers
     public class ValuesController : Controller
     {
         // GET api/values
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<string> Get()
         {
