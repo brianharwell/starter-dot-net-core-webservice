@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Starter.Webservice.Business\Starter.Webservice.Business.csproj" />
     <ProjectReference Include="..\Starter.Services\Starter.Services.csproj" />
+    <ProjectReference Include="..\Starter.Webservice.Business\Starter.Webservice.Business.csproj" />
   </ItemGroup>
 
   <ItemGroup>
